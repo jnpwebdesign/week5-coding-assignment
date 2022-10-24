@@ -15,26 +15,27 @@ console.log("WEEK5-CODING-ASSIGNMENT");
 
 
 class Outfit {
-    constructor(outfitConstructor, pattern) {
+    constructor(outfitConstructor) {
         this.outfitConstructor = outfitConstructor;
-        this.pattern = pattern;
-        this.chestMeasurement = chestMeasurement;
-        this.waistMeasurement = waistMeasurement;
-        this.height = height;
-        this.fabric = fabric;
+//        this.pattern = pattern;
+//        this.chestMeasurement = chestMeasurement;
+//        this.waistMeasurement = waistMeasurement;
+//        this.height = height;
+//        this.fabric = fabric;
     }
     describe() {
-        return `${this.outfitConstructor} uses the ${this.pattern} pattern.`
+//      return `${this.outfitConstructor} uses the ${this.pattern} pattern.`;
+        return this.outfitConstructor;
     }
     
 }
 
 class Client {
-    constructor(clientName, emailAddress, local, kidsNames) {
+    constructor(clientName) {
         this.clientName = clientName;
-        this.emailAddress = emailAddress;
-        this.local = local;
-        this.kidsNames = kidsNames;
+//        this.emailAddress = emailAddress;
+//        this.local = local;
+//        this.kidsNames = kidsNames;
         this.outfits = [];
     }
 
@@ -45,16 +46,24 @@ class Client {
         } else {
             throw new Error(`${outfitName} has not yet been created.`)
         }
+        
     }
 
 
     describe() {
+        return ("Outfit Name: " + this.outfitName);
+
+    }    
+     /*
         if (this.local === true) {
             return `${this.clientName} lives locally and can be reached at ${this.emailAddress}.`
         } else {
             return `${this.clientName} is not local and can be reached at ${this.emailAddress}.`
         }
+    
+        return this.outfitName;
     }
+    */
 }
 
 class mainMenu {
@@ -111,14 +120,8 @@ class mainMenu {
         );
     }
 
-    displayClients() {
-        let stringOfClients = "";
-        for (let i = 0; i < this.arrayOfClients.length; i++) {
-            stringOfClients += `\n ${i}) ${this.arrayOfClients[i].clientName}` 
-        }
-        alert(`Here's a list of all the clients ${stringOfClients}`);
-    }   
 
+//main menu option 1
     createClientRecord() {
         let clientName = prompt("Enter name of new client:");
         if (!this.arrayOfClients.some((client) => { return client.clientName === clientName})) {
@@ -128,14 +131,19 @@ class mainMenu {
             alert("That client's information has already been logged.")
         }
     } 
-        
+ 
+//main menu option 2    
     viewIndividualClientOutfits(){
         let stringOfClients = this.arrayOfClients.map(function(individualClientElement) {
             return individualClientElement.clientName;
         });
     let index = prompt(`Which client's outfits would you like to view? Choose a number`);
+        console.log(stringOfClients);
+        console.log(this.arrayOfClients);
     if (index >= 0 && index < this.arrayOfClients.length) {
         this.selectedClient = this.arrayOfClients[index];
+      
+        console.log(this.selectedClient);
         let clientRoster = `Client Name: ${this.selectedClient.clientName}`;
         for (let j = 0; j < this.selectedClient.outfits.length; j++) {
             clientRoster += `${j} ${this.selectedClient.outfits[j].outfitName}, ${this.selectedClient.outfits[j].pattern}`;
@@ -157,30 +165,47 @@ class mainMenu {
         }    
     }
 
+//main menu option 3
     deleteClient() {
         let stringOfClients = this.arrayOfClients.map(function(individualClientElement) {
             return individualClientElement.clientName;
         });
-        let index = prompt("Which client do you want to delete? Choose a number.");
+        let index = prompt("Which client do you want to delete? Choose a number." + stringOfClients);
+//            console.log("the array is: " + this.arrayOfClients + " and the chosen client is: " + this.arrayOfClients[index]);
         if (index >= 0 && index < this.arrayOfClients.length) {
-            this.selectedClient = this.arrayOfClients[index];
-            let deletedClient = this.selectedClient.splice(index, 1);
-            alert(deletedClient + ": this team has been deleted");
+            this.selectedClient = this.arrayOfClients[index].clientName;
+//            console.log("stringOfClients: " + stringOfClients);
+//            console.log("selectedClient: " + this.selectedClient);
+            this.arrayOfClients.splice(index, 1);
+            let deletedClient = this.arrayOfClients.splice(index, 1);
+            console.log("deletedClent: " + deletedClient);
+            alert("This client has been deleted");
         } else {
-            alert("This number does not correspond to a team.")
+            alert("This number does not correspond to a client. Please choose again.")
         }
     }
-    
+
+//main menu option 4
+    displayClients() {
+        let stringOfClients = "";
+        for (let i = 0; i < this.arrayOfClients.length; i++) {
+            stringOfClients += `\n ${i}) ${this.arrayOfClients[i].clientName}` 
+        }
+        alert(`Here's a list of all the clients ${stringOfClients}`);
+    }   
+
+//outfit menu option 1
     createOutfit() {
         let outfitConstructor = prompt("Enter name for new outfit:");
-        let pattern = prompt("Enter sewing pattern:");
-        this.selectedClient.outfits.push(new Outfit(outfitConstructor, pattern));
+//        let pattern = prompt("Enter sewing pattern:");
+        this.selectedClient.outfits.push(new Outfit(outfitConstructor));
     }
 
+//outfit menu option 2
     deleteOutfit() {
         let index = prompt("Enter the index of the outfit you wish to delete:");
         if (index > -1 && index < this.selectedClient.outfits.length) {
-            this.selectedClient.outfits.slice(index, 1);
+            this.selectedClient.outfits.splice(index, 1);
         } else {
             alert("Sorry, that outfit does not exist.");
         }
